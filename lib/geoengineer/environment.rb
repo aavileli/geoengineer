@@ -72,6 +72,7 @@ class GeoEngineer::Environment
 
   def resource(type, id, &block)
     return find_resource(type, id) unless block_given?
+
     resource = create_resource(type, id, &block)
     resource.environment = self
     resource
@@ -169,7 +170,7 @@ class GeoEngineer::Environment
     end
   end
 
-  def to_terraform_state
+  def to_terraform_state 
     reses = all_resources.select(&:_terraform_id) # _terraform_id must not be nil
 
     reses = Parallel.map(reses, { in_threads: Parallel.processor_count }) do |r|
